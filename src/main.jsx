@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo, useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Coffee, ExternalLink, Heart, MapPin, RotateCcw, Send, Sparkles, Star } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, CheckCircle2, Coffee, ExternalLink, Heart, Loader2, MapPin, RotateCcw, Search, Send, Sparkles, Star, X } from 'lucide-react';
 import './styles.css';
 
 const areas = ['Quận 1', 'Quận 3', 'Quận 7', 'Bình Thạnh', 'Phú Nhuận', 'Tân Bình', 'Thủ Đức'];
@@ -16,8 +16,17 @@ const cafes = [
   { id: 7, area: 'Bình Thạnh', name: 'The Hideout', rating: 4.7, address: 'Nguyễn Gia Trí, Bình Thạnh', note: 'Một nơi khá chill để kể nhau nghe vài chuyện.', image: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=900&q=85' },
   { id: 8, area: 'Phú Nhuận', name: 'Cà Lem', rating: 4.6, address: 'Phan Xích Long, Phú Nhuận', note: 'Nhỏ xinh, ấm cúng và dễ thương.', image: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=85' },
   { id: 9, area: 'Tân Bình', name: 'Cheese Coffee', rating: 4.4, address: 'Hoàng Văn Thụ, Tân Bình', note: 'Dễ tìm, thoải mái, không quá cầu kỳ.', image: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=900&q=85' },
-  { id: 10, area: 'Thủ Đức', name: 'Every Half Coffee', rating: 4.7, address: 'Võ Văn Ngân, Thủ Đức', note: 'Một lựa chọn nhẹ nhàng cho một buổi chiều.', image: 'https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=900&q=85' }
 ];
+
+const popularCafesByArea = {
+  'Tân Bình': ['Cheese Coffee', 'Highlands Coffee', 'The Coffee House', 'Gia Phúc Cafe'],
+  'Quận 1': ['The Workshop', 'Okkio Caffe', 'Lá Coffee', 'Katinat', 'Cộng Cà Phê'],
+  'Quận 3': ['Sunday Coffee', 'Okkio Caffe', 'Nấp Saigon', 'Phúc Long'],
+  'Quận 7': ['The Running Bean', 'Morico', 'Awesome Coffee', 'Cộng Cà Phê'],
+  'Bình Thạnh': ['Blank Lounge', 'The Hideout', 'Cafe Luia', 'Trăng Non Rooftop'],
+  'Phú Nhuận': ['Cà Lem', 'Chidori Coffee', 'The Dome Kaffe', 'Pergola'],
+  'Thủ Đức': ['Every Half Coffee', 'Zera Cafe', 'Green Garden', 'Cà Phê Sân Vườn']
+};
 
 const pageVariants = { initial: { opacity: 0, y: 18 }, animate: { opacity: 1, y: 0, transition: { duration: .45, ease: 'easeOut' } }, exit: { opacity: 0, y: -14, transition: { duration: .25 } } };
 
@@ -149,16 +158,19 @@ function App() {
 
         {step === 'custom' && <motion.section key="custom" className="content narrow" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('cafes')} />
-          <div className="section-head"><div className="mini-icon"><MapPin size={19} /></div><p className="kicker">Step 02 · Your choice</p><h2>Không vấn đề gì.<br /><em>Chọn nhé.</em> 📍</h2><p>Mở Google Maps, tìm quán bạn thích ở {selectedArea}, rồi điền lại tên quán bên dưới.</p></div>
-          <div className="custom-panel">
-            <motion.button className="maps-button" onClick={openMaps} whileHover={{ y: -2 }} whileTap={{ scale: .98 }}><MapPin size={18} /> Mở Google Maps <ExternalLink size={15} /></motion.button>
-            <form onSubmit={saveCustomPlace} className="custom-form">
-              <label>Tên quán café<input required value={customPlace.name} onChange={e => setCustomPlace(v => ({ ...v, name: e.target.value }))} placeholder="Ví dụ: The Workshop..." /></label>
-              <label>Địa chỉ <span>(không bắt buộc)</span><input value={customPlace.address} onChange={e => setCustomPlace(v => ({ ...v, address: e.target.value }))} placeholder="Địa chỉ quán" /></label>
-              <label>Link Google Maps <span>(không bắt buộc)</span><input type="url" value={customPlace.mapsUrl} onChange={e => setCustomPlace(v => ({ ...v, mapsUrl: e.target.value }))} placeholder="https://maps.google.com/..." /></label>
-              <button className="primary full" type="submit">Chọn quán này <ArrowRight size={18} /></button>
-            </form>
+          <div className="section-head">
+            <div className="mini-icon"><MapPin size={19} /></div>
+            <p className="kicker">Step 02 · Your choice</p>
+            <h2>Không vấn đề gì.<br /><em>Chọn nhé.</em> 📍</h2>
+            <p>Tìm hoặc gõ tên quán bạn thích ở {selectedArea}, hệ thống sẽ tự động tìm địa chỉ & vị trí chính xác.</p>
           </div>
+          <CustomCafeSearch
+            selectedArea={selectedArea}
+            customPlace={customPlace}
+            setCustomPlace={setCustomPlace}
+            onSave={saveCustomPlace}
+            onOpenMaps={openMaps}
+          />
         </motion.section>}
 
         {step === 'time' && selectedCafe && <motion.section key="time" className="content narrow" variants={pageVariants} initial="initial" animate="animate" exit="exit">
@@ -182,6 +194,237 @@ function App() {
     </main>
     <footer>made with ☕ & a little courage</footer>
   </div>
+}
+
+function CustomCafeSearch({ selectedArea, customPlace, setCustomPlace, onSave, onOpenMaps }) {
+  const [query, setQuery] = useState(customPlace.name || '');
+  const [suggestions, setSuggestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const containerRef = useRef(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleOutside);
+    return () => document.removeEventListener('mousedown', handleOutside);
+  }, []);
+
+  // Search logic with debounce using Photon OpenStreetMap API
+  useEffect(() => {
+    if (!query || query.trim().length < 2) {
+      setSuggestions([]);
+      setIsLoading(false);
+      return;
+    }
+
+    if (selectedItem && selectedItem.name.toLowerCase() === query.trim().toLowerCase()) {
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsLoading(true);
+      try {
+        const q1 = `${query.trim()} ${selectedArea || ''} Ho Chi Minh`;
+        const res1 = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q1)}&lat=10.7769&lon=106.7009&limit=6`);
+        let data = await res1.json();
+        let features = data.features || [];
+
+        if (features.length === 0) {
+          const q2 = `${query.trim()} Ho Chi Minh`;
+          const res2 = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(q2)}&lat=10.7769&lon=106.7009&limit=6`);
+          data = await res2.json();
+          features = data.features || [];
+        }
+
+        const list = features.map(f => {
+          const p = f.properties || {};
+          const [lon, lat] = f.geometry?.coordinates || [];
+          const parts = [
+            p.housenumber ? `${p.housenumber} ${p.street || ''}`.trim() : p.street,
+            p.district || p.locality,
+            p.city || 'TP. Hồ Chí Minh'
+          ].filter(Boolean);
+          return {
+            id: `${p.osm_type || ''}_${p.osm_id || Math.random()}`,
+            name: p.name || query.trim(),
+            district: p.district || p.locality || '',
+            address: parts.join(', '),
+            lat,
+            lon,
+            mapsUrl: lat && lon ? `https://www.google.com/maps?q=${lat},${lon}` : ''
+          };
+        });
+
+        setSuggestions(list);
+        setIsOpen(true);
+      } catch (err) {
+        console.error('Search error:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [query, selectedArea, selectedItem]);
+
+  const handleSelect = (item) => {
+    setSelectedItem(item);
+    setQuery(item.name);
+    setCustomPlace({
+      name: item.name,
+      address: item.address,
+      mapsUrl: item.mapsUrl
+    });
+    setIsOpen(false);
+  };
+
+  const handleChipClick = (cafeName) => {
+    setSelectedItem(null);
+    setQuery(cafeName);
+    setCustomPlace(v => ({ ...v, name: cafeName }));
+  };
+
+  const handleClear = () => {
+    setQuery('');
+    setSelectedItem(null);
+    setCustomPlace({ name: '', address: '', mapsUrl: '' });
+    setSuggestions([]);
+    setIsOpen(false);
+  };
+
+  const quickChips = popularCafesByArea[selectedArea] || ['Highlands Coffee', 'The Coffee House', 'Cheese Coffee', 'Phúc Long'];
+
+  return (
+    <div className="custom-panel">
+      {/* Quick suggest chips */}
+      <div className="quick-chips">
+        <span className="quick-chip-label">⚡ Gợi ý quán nổi bật ở {selectedArea}:</span>
+        {quickChips.map(name => (
+          <button
+            type="button"
+            key={name}
+            className="chip"
+            onClick={() => handleChipClick(name)}
+          >
+            ☕ {name}
+          </button>
+        ))}
+      </div>
+
+      <form onSubmit={onSave} className="custom-form">
+        {/* Search input with autocomplete dropdown */}
+        <label>
+          Tên quán café <span>(Gõ để tìm kiếm tự động)</span>
+          <div className="search-container" ref={containerRef}>
+            <div className="search-input-wrap">
+              <Search size={17} className="search-icon-left" />
+              <input
+                required
+                className="search-input"
+                value={query}
+                onChange={e => {
+                  setQuery(e.target.value);
+                  setSelectedItem(null);
+                  setCustomPlace(v => ({ ...v, name: e.target.value }));
+                }}
+                onFocus={() => {
+                  if (suggestions.length > 0) setIsOpen(true);
+                }}
+                placeholder="Ví dụ: Cheese Coffee, Highlands..."
+              />
+              {isLoading ? (
+                <Loader2 size={16} className="search-spinner" />
+              ) : query ? (
+                <button type="button" className="search-clear" onClick={handleClear}>
+                  <X size={15} />
+                </button>
+              ) : null}
+            </div>
+
+            {/* Dropdown suggestions */}
+            {isOpen && (
+              <div className="suggestions-dropdown">
+                {suggestions.length > 0 ? (
+                  suggestions.map((item, idx) => (
+                    <button
+                      type="button"
+                      key={item.id || idx}
+                      className="suggestion-item"
+                      onClick={() => handleSelect(item)}
+                    >
+                      <Coffee size={17} className="suggestion-icon" />
+                      <div className="suggestion-content">
+                        <div className="suggestion-header">
+                          <span className="suggestion-name">{item.name}</span>
+                          {item.district && <span className="suggestion-badge">{item.district}</span>}
+                        </div>
+                        {item.address && <span className="suggestion-addr">{item.address}</span>}
+                      </div>
+                    </button>
+                  ))
+                ) : !isLoading && query.trim().length >= 2 ? (
+                  <div className="dropdown-empty">
+                    Không tìm thấy quán tương ứng. Bạn có thể tự điền địa chỉ bên dưới nhé!
+                  </div>
+                ) : null}
+              </div>
+            )}
+          </div>
+        </label>
+
+        {/* Verified Location Banner */}
+        {customPlace.mapsUrl && (
+          <div className="verified-banner">
+            <div>
+              <CheckCircle2 size={16} />
+              <span>Đã tự động định vị vị trí chuẩn xác!</span>
+            </div>
+            <a href={customPlace.mapsUrl} target="_blank" rel="noreferrer">
+              Xem vị trí <ExternalLink size={13} />
+            </a>
+          </div>
+        )}
+
+        <label>
+          Địa chỉ <span>(tự điền khi chọn gợi ý hoặc chỉnh sửa)</span>
+          <input
+            value={customPlace.address}
+            onChange={e => setCustomPlace(v => ({ ...v, address: e.target.value }))}
+            placeholder="Địa chỉ quán (số nhà, tên đường...)"
+          />
+        </label>
+
+        <label>
+          Link Google Maps <span>(tự động tạo theo toạ độ)</span>
+          <input
+            type="url"
+            value={customPlace.mapsUrl}
+            onChange={e => setCustomPlace(v => ({ ...v, mapsUrl: e.target.value }))}
+            placeholder="https://maps.google.com/..."
+          />
+        </label>
+
+        <button className="primary full" type="submit">
+          Chọn quán này <ArrowRight size={18} />
+        </button>
+
+        <button
+          type="button"
+          className="maps-button"
+          style={{ marginTop: '8px', marginBottom: 0 }}
+          onClick={onOpenMaps}
+        >
+          <MapPin size={16} /> Hoặc mở Google Maps tìm kiếm <ExternalLink size={14} />
+        </button>
+      </form>
+    </div>
+  );
 }
 
 function Back({ onClick }) { return <button className="back" onClick={onClick}><ArrowLeft size={16} /> Back</button>; }
