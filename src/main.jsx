@@ -124,35 +124,35 @@ function App() {
     <motion.div className="orb orb-a" animate={{ x: [0, 18, 0], y: [0, -12, 0] }} transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }} />
     <motion.div className="orb orb-b" animate={{ x: [0, -16, 0], y: [0, 15, 0] }} transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }} />
 
-    <header className="topbar"><div className="brand"><Coffee size={18} /><span>just a little invitation</span></div><div className="progress">{progress ? `☕ ${progress}` : ''}</div></header>
+    <header className="topbar"><div className="brand"><Coffee size={18} /><span>a little invitation · for Mỹ Nguyên 💌</span></div><div className="progress">{progress ? `☕ ${progress}` : ''}</div></header>
 
     <main className="shell">
       <AnimatePresence mode="wait">
         {step === 'home' && <motion.section key="home" className="hero" variants={pageVariants} initial="initial" animate="animate" exit="exit">
-          <motion.div className="eyebrow" initial={{ opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: .15 }}>A tiny digital invitation <Sparkles size={14} /></motion.div>
+          <motion.div className="eyebrow" initial={{ opacity: 0, scale: .9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: .15 }}>Một chiếc thiệp mời bé xíu 💌 <Sparkles size={14} /></motion.div>
           <h1>Hello,<br /><em>Mỹ Nguyên</em> <span>👋</span></h1>
-          <p className="lead">Mặc dù hơi ngại nhưng mà t muốn chúng ta =))))) .</p>
-          <p className="question">Would you like to go for a coffee with me?</p>
-          <motion.button className="primary" onClick={() => setStep('areas')} whileHover={{ scale: 1.03, y: -2 }} whileTap={{ scale: .97 }}>Let's go <ArrowRight size={19} /></motion.button>
+          <p className="lead">Mặc dù hơi ngại nhưng mà t muốn rủ bạn... 🌸</p>
+          <p className="question">Hôm nào rảnh m đi uống café với t nhé? ( ˶ˆ꒳ˆ˵ )</p>
+          <motion.button className="primary" onClick={() => setStep('areas')} whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: .97 }}>Đi thôii nà ☕ <ArrowRight size={19} /></motion.button>
           <div className="coffee-mark"><Coffee size={42} /><span>☕</span></div>
         </motion.section>}
 
         {step === 'areas' && <motion.section key="areas" className="content" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('home')} />
-          <div className="section-head"><div className="mini-icon"><MapPin size={19} /></div><p className="kicker">Step 01</p><h2>Mỹ Nguyên muốn đi café<br /><em>ở khu vực nào?</em></h2><p>Chọn ii bbi oii.</p></div>
+          <div className="section-head"><div className="mini-icon"><MapPin size={19} /></div><p className="kicker">Step 01 · Gặp nhau ở đâu nhỉ?</p><h2>Mỹ Nguyên muốn đi café<br /><em>ở khu vực nào nà?</em> 📍</h2><p>Chọn một quận m tiện đi lại nhất nhen 🌷</p></div>
           <div className="area-grid">{areas.map((area, i) => <motion.button key={area} className="area-card" onClick={() => chooseArea(area)} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * .045 }} whileHover={{ y: -5 }} whileTap={{ scale: .97 }}><span>{String(i + 1).padStart(2, '0')}</span><strong>{area}</strong><ArrowRight size={17} /></motion.button>)}</div>
         </motion.section>}
 
         {step === 'cafes' && <motion.section key="cafes" className="content wide" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('areas')} />
-          <div className="section-head left"><p className="kicker">Step 02 · {selectedArea}</p><h2><em>{selectedArea}</em> it is! 📍</h2><p>Mình tìm được vài chỗ ở khu vực này. Bạn thích nơi nào?</p></div>
+          <div className="section-head left"><p className="kicker">Step 02 · {selectedArea}</p><h2><em>{selectedArea}</em> thẳng tiến! 📍✨</h2><p>Tui tìm được mấy quán xinh xinh ở khu này nè, m ưng quán nào nhất:</p></div>
           <div className="cafe-grid">{filteredCafes.map((cafe, i) => <motion.article className="cafe-card" key={cafe.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * .1 }} whileHover={{ y: -7 }}>
             <div className="cafe-image"><img src={cafe.image} alt={cafe.name} /><div className="rating"><Star size={13} fill="currentColor" /> {cafe.rating}</div></div>
-            <div className="cafe-body"><div><h3>{cafe.name}</h3><p className="address"><MapPin size={14} /> {cafe.address}</p></div><p className="note">{cafe.note}</p><button className="choose" onClick={() => chooseCafe(cafe)}>I'd choose this <Coffee size={16} /></button></div>
+            <div className="cafe-body"><div><h3>{cafe.name}</h3><p className="address"><MapPin size={14} /> {cafe.address}</p></div><p className="note">{cafe.note}</p><button className="choose" onClick={() => chooseCafe(cafe)}>Chọn quán này nhen ♡ <Coffee size={16} /></button></div>
           </motion.article>)}</div>
           <motion.div className="custom-choice" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .25 }}>
-            <div><span className="custom-icon"><MapPin size={18} /></span><div><strong>Không thích những quán này?</strong><p>Hay là m tự chọn một địa điểm oke trên Google Maps nhé.</p></div></div>
-            <button className="custom-button" onClick={chooseCustom}>Tự chọn địa điểm <ExternalLink size={16} /></button>
+            <div><span className="custom-icon"><MapPin size={18} /></span><div><strong>Không ưng mấy quán trên?</strong><p>M có thể tự gõ tên quán m thích nhen, hệ thống sẽ tự tìm vị trí luôn 🔍</p></div></div>
+            <button className="custom-button" onClick={chooseCustom}>Tự chọn quán khác <ExternalLink size={16} /></button>
           </motion.div>
         </motion.section>}
 
@@ -161,7 +161,7 @@ function App() {
           <div className="section-head">
             <div className="mini-icon"><MapPin size={19} /></div>
             <p className="kicker">Step 02 · Your choice</p>
-            <h2>Không vấn đề gì.<br /><em>Chọn nhé.</em> 📍</h2>
+            <h2>M ưng quán nào nà?<br /><em>Chọn nhen.</em> 📍</h2>
             <p>Tìm hoặc gõ tên quán bạn thích ở {selectedArea}, hệ thống sẽ tự động tìm địa chỉ & vị trí chính xác.</p>
           </div>
           <CustomCafeSearch
@@ -175,24 +175,24 @@ function App() {
 
         {step === 'time' && selectedCafe && <motion.section key="time" className="content narrow" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep(isCustom ? 'custom' : 'cafes')} />
-          <div className="section-head"><div className="mini-icon"><Coffee size={19} /></div><p className="kicker">Step 03 · Almost there</p><h2>Vậy còn lúc nào<br /><em>bạn rảnh?</em> ☕</h2><p>Chọn ngày và khoảng thời gian m thấy thoải mái nhất.</p></div>
+          <div className="section-head"><div className="mini-icon"><Coffee size={19} /></div><p className="kicker">Step 03 · Lúc nào rảnh nè?</p><h2>Vậy còn lúc nào<br /><em>thì m rảnh?</em> ⏰ ☕</h2><p>Chọn ngày và khoảng thời gian m thấy thoải mái nhất nhó!</p></div>
           <form className="time-panel" onSubmit={goConfirm}>
-            <div className="time-picked"><span>📍</span><div><small>Địa điểm</small><strong>{place.name}</strong><small>{place.address || selectedArea}</small></div></div>
-            <div className="date-time-grid"><label>Ngày<input type="date" required min={new Date().toISOString().split('T')[0]} value={date} onChange={e => setDate(e.target.value)} /></label><label>Giờ<input type="time" required value={time} onChange={e => setTime(e.target.value)} /></label></div>
-            <p className="hint">Chọn bất kỳ ngày/giờ nào m thấy thoải mái nhất nhó !!! 🌿</p>
-            <button className="primary full" type="submit">Tiếp tục <ArrowRight size={18} /></button>
+            <div className="time-picked"><span>📍</span><div><small>Địa điểm đã chọn</small><strong>{place.name}</strong><small>{place.address || selectedArea}</small></div></div>
+            <div className="date-time-grid"><label>Ngày hẹn<input type="date" required min={new Date().toISOString().split('T')[0]} value={date} onChange={e => setDate(e.target.value)} /></label><label>Giờ hẹn<input type="time" required value={time} onChange={e => setTime(e.target.value)} /></label></div>
+            <p className="hint">✨ Ngày nào m rảnh cũng là ngày đẹp trời hết ó 🌿</p>
+            <button className="primary full" type="submit">Tiếp tục thôii <ArrowRight size={18} /></button>
           </form>
         </motion.section>}
 
         {step === 'confirm' && selectedCafe && <motion.section key="confirm" className="confirm" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('time')} />
-          <div className="confirm-card"><motion.div className="heart" animate={{ scale: [1, 1.12, 1] }} transition={{ duration: 1.8, repeat: Infinity }}><Heart size={24} fill="currentColor" /></motion.div><p className="kicker">Step 04</p><h2>It's a date...<br /><em>maybe?</em> 👀☕</h2><p>Bạn đã chọn:</p><div className="picked"><span>📍</span><div><small>Khu vực</small><strong>{selectedArea}</strong></div></div><div className="picked"><span>☕</span><div><small>Địa điểm</small><strong>{place.name}</strong><small>{place.address || 'Tự chọn trên Google Maps'}</small></div></div><div className="picked"><span>🗓️</span><div><small>Thời gian</small><strong>{date} · {time}</strong></div></div>{place.mapsUrl && <a className="maps-link" href={place.mapsUrl} target="_blank" rel="noreferrer"><MapPin size={15} /> Xem địa điểm trên Google Maps</a>}<p className="promise">Mình sẽ lo phần còn lại nhé.</p>{sendError && <p className="send-error">{sendError}</p>}<button className="primary full" onClick={confirm} disabled={sending}>{sending ? 'Đang gửi...' : <>Confirm <Send size={17} /></>}</button></div>
+          <div className="confirm-card"><motion.div className="heart" animate={{ scale: [1, 1.14, 1] }} transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}><Heart size={26} fill="currentColor" /></motion.div><p className="kicker">Step 04 · Chốt kèo</p><h2>It's a date...<br /><em>maybe?</em> 👉👈 ☕</h2><p>Mỹ Nguyên đã chọn:</p><div className="picked"><span>📍</span><div><small>Khu vực</small><strong>{selectedArea}</strong></div></div><div className="picked"><span>☕</span><div><small>Địa điểm</small><strong>{place.name}</strong><small>{place.address || 'Tự chọn trên Google Maps'}</small></div></div><div className="picked"><span>🗓️</span><div><small>Thời gian</small><strong>{date} · {time}</strong></div></div>{place.mapsUrl && <a className="maps-link" href={place.mapsUrl} target="_blank" rel="noreferrer"><MapPin size={15} /> Xem địa điểm trên Google Maps ↗</a>}<p className="promise">~ M chỉ việc lên đồ thật xinh thôi, còn lại để t lo hết nhen! 🌷 ~</p>{sendError && <p className="send-error">{sendError}</p>}<button className="primary full" onClick={confirm} disabled={sending}>{sending ? 'Đang gửi thông tin...' : <>Chốt đơn nhen 💌 <Send size={17} /></>}</button></div>
         </motion.section>}
 
-        {step === 'success' && <motion.section key="success" className="confirm" variants={pageVariants} initial="initial" animate="animate" exit="exit"><div className="success-card"><motion.div className="success-icon" initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 220, damping: 13 }}><Check size={34} /></motion.div><h2>Got it! <span>💙</span></h2><p>Lựa chọn của bạn đã được gửi rồi.</p><div className="summary"><span>📍 {selectedArea}</span><span>☕ {place?.name}</span><span>🗓️ {date} · {time}</span></div><p className="promise">See you soon.</p><div className="success-actions"><button className="ghost" onClick={() => setStep('confirm')}><ArrowLeft size={16} /> Back</button><button className="ghost" onClick={reset}><RotateCcw size={16} /> Start again</button></div></div></motion.section>}
+        {step === 'success' && <motion.section key="success" className="confirm" variants={pageVariants} initial="initial" animate="animate" exit="exit"><div className="success-card"><motion.div className="success-icon" initial={{ scale: 0, rotate: -20 }} animate={{ scale: 1, rotate: 0 }} transition={{ type: 'spring', stiffness: 220, damping: 13 }}><Check size={36} /></motion.div><h2>Yayy! Chốt kèo 💖</h2><p>Lựa chọn của bạn đã được gửi thẳng tới tui rồi nè!</p><div className="summary"><span>📍 Khu vực: {selectedArea}</span><span>☕ Quán: {place?.name}</span><span>🗓️ Thời gian: {date} · {time}</span></div><p className="promise">Hẹn gặp bạn sớm nhaaa 🧸🌷</p><div className="success-actions"><button className="ghost" onClick={() => setStep('confirm')}><ArrowLeft size={16} /> Xem lại</button><button className="ghost" onClick={reset}><RotateCcw size={16} /> Chọn lại từ đầu</button></div></div></motion.section>}
       </AnimatePresence>
     </main>
-    <footer>made with ☕ & a little courage</footer>
+    <footer>made with ☕ & a little courage · for Mỹ Nguyên ♡</footer>
   </div>
 }
 
