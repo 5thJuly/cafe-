@@ -133,22 +133,22 @@ function App() {
           <h1>Hello,<br /><em>Mỹ Nguyên</em> <span>👋</span></h1>
           <p className="lead">Mặc dù hơi ngại nhưng mà t muốn rủ bạn... 🌸</p>
           <p className="question">Hôm nào rảnh m đi uống café với t nhé? ( ˶ˆ꒳ˆ˵ )</p>
-          <motion.button className="primary" onClick={() => setStep('areas')} whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: .97 }}>Đi thôii nà ☕ <ArrowRight size={19} /></motion.button>
+          <motion.button className="primary" onClick={() => setStep('areas')} whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: .97 }}>Đi thôii nè ☕ <ArrowRight size={19} /></motion.button>
           <div className="coffee-mark"><Coffee size={42} /><span>☕</span></div>
         </motion.section>}
 
         {step === 'areas' && <motion.section key="areas" className="content" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('home')} />
-          <div className="section-head"><div className="mini-icon"><MapPin size={19} /></div><p className="kicker">Step 01 · Gặp nhau ở đâu nhỉ?</p><h2>Mỹ Nguyên muốn đi café<br /><em>ở khu vực nào nà?</em> 📍</h2><p>Chọn một quận m tiện đi lại nhất nhen 🌷</p></div>
+          <div className="section-head"><div className="mini-icon"><MapPin size={19} /></div><p className="kicker">Step 01 · Gặp nhau ở đâu nhỉ?</p><h2>Mỹ Nguyên muốn đi café<br /><em>ở khu vực nào nè?</em> 📍</h2><p>Chọn một quận m tiện đi lại nhất nhen 🌷</p></div>
           <div className="area-grid">{areas.map((area, i) => <motion.button key={area} className="area-card" onClick={() => chooseArea(area)} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * .045 }} whileHover={{ y: -5 }} whileTap={{ scale: .97 }}><span>{String(i + 1).padStart(2, '0')}</span><strong>{area}</strong><ArrowRight size={17} /></motion.button>)}</div>
         </motion.section>}
 
         {step === 'cafes' && <motion.section key="cafes" className="content wide" variants={pageVariants} initial="initial" animate="animate" exit="exit">
           <Back onClick={() => setStep('areas')} />
-          <div className="section-head left"><p className="kicker">Step 02 · {selectedArea}</p><h2><em>{selectedArea}</em> thẳng tiến! 📍✨</h2><p>Tui tìm được mấy quán xinh xinh ở khu này nè, m ưng quán nào nhất:</p></div>
+          <div className="section-head left"><p className="kicker">Step 02 · {selectedArea}</p><h2><em>{selectedArea}</em> thẳng tiến! 📍✨</h2><p>Tui tìm được mấy quán xinh xinh ở khu nèy nè, m ưng quán nào nhất:</p></div>
           <div className="cafe-grid">{filteredCafes.map((cafe, i) => <motion.article className="cafe-card" key={cafe.id} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * .1 }} whileHover={{ y: -7 }}>
             <div className="cafe-image"><img src={cafe.image} alt={cafe.name} /><div className="rating"><Star size={13} fill="currentColor" /> {cafe.rating}</div></div>
-            <div className="cafe-body"><div><h3>{cafe.name}</h3><p className="address"><MapPin size={14} /> {cafe.address}</p></div><p className="note">{cafe.note}</p><button className="choose" onClick={() => chooseCafe(cafe)}>Chọn quán này nhen ♡ <Coffee size={16} /></button></div>
+            <div className="cafe-body"><div><h3>{cafe.name}</h3><p className="address"><MapPin size={14} /> {cafe.address}</p></div><p className="note">{cafe.note}</p><button className="choose" onClick={() => chooseCafe(cafe)}>Chọn quán nèy nhen ♡ <Coffee size={16} /></button></div>
           </motion.article>)}</div>
           <motion.div className="custom-choice" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .25 }}>
             <div><span className="custom-icon"><MapPin size={18} /></span><div><strong>Không ưng mấy quán trên?</strong><p>M có thể tự gõ tên quán m thích nhen, hệ thống sẽ tự tìm vị trí luôn 🔍</p></div></div>
@@ -161,7 +161,7 @@ function App() {
           <div className="section-head">
             <div className="mini-icon"><MapPin size={19} /></div>
             <p className="kicker">Step 02 · Your choice</p>
-            <h2>M ưng quán nào nà?<br /><em>Chọn nhen.</em> 📍</h2>
+            <h2>M ưng quán nào nè?<br /><em>Chọn nhen.</em> 📍</h2>
             <p>Tìm hoặc gõ tên quán bạn thích ở {selectedArea}, hệ thống sẽ tự động tìm địa chỉ & vị trí chính xác.</p>
           </div>
           <CustomCafeSearch
@@ -411,7 +411,7 @@ function CustomCafeSearch({ selectedArea, customPlace, setCustomPlace, onSave, o
         </label>
 
         <button className="primary full" type="submit">
-          Chọn quán này <ArrowRight size={18} />
+          Chọn quán nèy <ArrowRight size={18} />
         </button>
 
         <button
